@@ -155,6 +155,7 @@ class _EnterPasswordScreenState extends State<EnterPasswordScreen> {
                   TextField(
                     style: myTextStyle21(fontColor: Colors.white),
                     obscureText: true,
+                    keyboardType: TextInputType.number,
                     cursorColor: Colors.black54,
                     controller: passwordController,
                     decoration: InputDecoration(

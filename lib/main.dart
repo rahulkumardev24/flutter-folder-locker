@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:password_lock_shared_pre/screen/enter_password_screen.dart';
 import 'package:password_lock_shared_pre/screen/set_password_screen.dart';
 import 'package:password_lock_shared_pre/screen/splash_screen.dart';
@@ -6,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String? savedPassword = sharedPreferences.getString("app_password");
+  await Hive.initFlutter();
+  await Hive.openBox('folderData'); // Open a Hive Box for storing folders
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()));
 }
 
