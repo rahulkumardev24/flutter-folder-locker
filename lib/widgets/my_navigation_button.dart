@@ -28,6 +28,6 @@ class _MyNavigationButtonState extends State<MyNavigationButton> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation:0,
       backgroundColor: widget.btnBackground,
-      child:Icon(widget.btnIcon , size:widget.iconSize,),);
+      child:Icon(widget.btnIcon , size:widget.iconSize, color: widget.iconColor,),);
   }
 }

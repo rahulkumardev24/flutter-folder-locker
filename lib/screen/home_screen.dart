@@ -10,8 +10,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Box _folderBox = Hive.box('folderData');
-  Set<String> _selectedFolders = {}; // Selected folders set
-  bool _selectionMode = false; // Selection mode state
+  Set<String> _selectedFolders = {};
+  bool _selectionMode = false;
 
   ///--- folder create function --- ///
   void _createFolder() {
