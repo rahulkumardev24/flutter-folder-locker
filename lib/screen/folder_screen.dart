@@ -51,7 +51,7 @@ class _FolderScreenState extends State<FolderScreen> {
         ),
         itemBuilder: (context, index) {
           String filePath = _files[index];
-          return filePath.endsWith(".mp3") || filePath.endsWith(".wav")
+          return filePath.endsWith(".mp3") || filePath.endsWith(".wav") || filePath.endsWith(".m4a")
               ? Icon(Icons.music_note, size: 50, color: Colors.blue)
               : filePath.endsWith(".mp4") || filePath.endsWith(".mkv")
               ? Icon(Icons.video_file, size: 50, color: Colors.red)

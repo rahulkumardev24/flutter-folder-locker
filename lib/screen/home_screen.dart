@@ -70,7 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.delete_forever , size: 200, color: Colors.red.shade400,),
+                Icon(
+                  Icons.delete_forever,
+                  size: 200,
+                  color: Colors.red.shade400,
+                ),
               ],
             ),
 
@@ -118,7 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Text(
                   "Ok",
-                  style: myTextStyle18(fontWeight: FontWeight.bold , fontColor: Colors.white),
+                  style: myTextStyle18(
+                    fontWeight: FontWeight.bold,
+                    fontColor: Colors.white,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.shade400,
@@ -149,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _selectionMode
                 ? [
                   IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
+                    icon: Icon(Icons.delete, color: Colors.red.shade500),
                     onPressed: _deleteSelectedFolders,
                   ),
                   IconButton(
@@ -163,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ]
                 : [],
       ),
-      backgroundColor: Color(0xff0758694),
+      backgroundColor: Color(0xff405D72),
 
       ///--- Body ---///
       body: GridView.builder(
@@ -177,7 +184,6 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           String folderName = folders[index];
           bool isSelected = _selectedFolders.contains(folderName);
-
           return InkWell(
             onTap:
                 _selectionMode
@@ -190,45 +196,63 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
             onLongPress: () => _toggleSelection(folderName),
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.red.withOpacity(0.2) : Colors.white,
-                border: Border.all(
-                  color: isSelected ? Colors.red : Colors.grey,
-                  width: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color:
+                      isSelected
+                          ? Colors.red.withAlpha(60)
+                          : Colors.transparent,
+                  border: Border.all(
+                    color: isSelected ? Colors.red : Colors.transparent,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.folder,
-                    size: 100,
-                    color: isSelected ? Colors.red : Colors.amber,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    folderName,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  if (isSelected)
-                    Icon(Icons.check_circle, color: Colors.red, size: 20),
-                ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.folder,
+                      size: 100,
+                      color: isSelected ? Colors.red : Colors.amber,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      folderName,
+                      style: myTextStyle18(
+                        fontWeight: FontWeight.bold,
+                        fontColor: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    if (isSelected)
+                      Icon(Icons.check_circle, color: Colors.red, size: 20),
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
 
+      /// --- Floating Action Button --- ///
       floatingActionButton:
           _selectionMode
               ? null
-              : FloatingActionButton(
+              : FloatingActionButton.extended(
                 onPressed: _createFolder,
-                child: Icon(Icons.create_new_folder),
+                elevation: 2,
+                backgroundColor: Color(0xffF7E7DC),
+                icon: Icon(Icons.create_new_folder, color: Color(0xff263f54)),
+                label: Text(
+                  "Create Folder",
+                  style: myTextStyle15(
+                    fontColor: Color(0xff263f54),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
     );
   }
