@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:password_lock_shared_pre/screen/enter_password_screen.dart';
 import 'package:password_lock_shared_pre/screen/set_password_screen.dart';
 import 'package:password_lock_shared_pre/screen/splash_screen.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox('folderData'); // Open a Hive Box for storing folders
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+
+  await Hive.openBox('folderData');
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()));
 }
+
 
 /// IN THIS VIDEO
 /// We lock and unlock Flutter application with shared preferences

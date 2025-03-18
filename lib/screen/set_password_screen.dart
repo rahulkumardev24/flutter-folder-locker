@@ -87,6 +87,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                     obscureText: true,
                     cursorColor: Colors.black54,
                     controller: passwordController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Color(0xff758694),
@@ -119,6 +120,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                     obscureText: true,
                     cursorColor: Colors.black54,
                     controller: confirmController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Color(0xff758694),
