@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:password_lock_shared_pre/utils/custom_text_style.dart';
 import 'package:password_lock_shared_pre/widgets/my_navigation_button.dart';
 
+import 'audio_player_screen.dart';
+
 class FolderScreen extends StatefulWidget {
   final String folderName;
 
@@ -44,6 +46,7 @@ class _FolderScreenState extends State<FolderScreen> {
     }
   }
 
+  /// --- Selection toggle --- ///
   void _toggleSelection(String fileName) {
     setState(() {
       if (_selectedFiles.contains(fileName)) {
@@ -62,50 +65,50 @@ class _FolderScreenState extends State<FolderScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        shape: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(
-          "Are you sure you want to delete the selected files?",
-          style: myTextStyle12(
-            fontWeight: FontWeight.bold,
-            fontColor: Color(0xff405D72),
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Cancel",
-              style: myTextStyle18(fontColor: Colors.black45),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                for (String file in _selectedFiles) {
-                  try {
-                    File(file).deleteSync(); // Physically delete file
-                  } catch (e) {
-                    print("Error deleting file: $e");
-                  }
-                }
-                _files.removeWhere((file) => _selectedFiles.contains(file));
-                _folderBox?.put(widget.folderName, _files);
-                _selectedFiles.clear();
-                _selectionMode = false;
-              });
-              Navigator.pop(context);
-            },
-            child: Text(
-              "Ok",
-              style: myTextStyle18(
+            backgroundColor: Colors.white,
+            shape: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            title: Text(
+              "Are you sure you want to delete the selected files?",
+              style: myTextStyle12(
                 fontWeight: FontWeight.bold,
-                fontColor: Colors.white,
+                fontColor: Color(0xff405D72),
               ),
             ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Cancel",
+                  style: myTextStyle18(fontColor: Colors.black45),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    for (String file in _selectedFiles) {
+                      try {
+                        File(file).deleteSync(); // Physically delete file
+                      } catch (e) {
+                        print("Error deleting file: $e");
+                      }
+                    }
+                    _files.removeWhere((file) => _selectedFiles.contains(file));
+                    _folderBox?.put(widget.folderName, _files);
+                    _selectedFiles.clear();
+                    _selectionMode = false;
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Ok",
+                  style: myTextStyle18(
+                    fontWeight: FontWeight.bold,
+                    fontColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -143,9 +146,9 @@ class _FolderScreenState extends State<FolderScreen> {
     } catch (e) {
       print('Error adding files: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error adding files: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error adding files: $e')));
       }
     }
   }
@@ -158,7 +161,9 @@ class _FolderScreenState extends State<FolderScreen> {
         context: context,
         builder: (context) => Dialog(child: Image.file(File(filePath))),
       );
-    } else if (filePath.endsWith('.mp4') || filePath.endsWith('.mkv')) {
+    }
+    /// --- Navigate to video screen
+    else if (filePath.endsWith('.mp4') || filePath.endsWith('.mkv')) {
       // Open video player
       Navigator.push(
         context,
@@ -166,9 +171,11 @@ class _FolderScreenState extends State<FolderScreen> {
           builder: (context) => VideoPlayerScreen(videoPath: filePath),
         ),
       );
-    } else if (filePath.endsWith('.mp3') || filePath.endsWith('.wav')) {
+    }
+    /// --- Navigate to AudioPlay Screen ---- ///
+    else if (filePath.endsWith('.mp3') || filePath.endsWith('.wav')) {
       // Play audio
-      AudioPlayer().play(DeviceFileSource(filePath));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerScreen(songPath: filePath,)));
     } else if (filePath.endsWith('.pdf') ||
         filePath.endsWith('.docx') ||
         filePath.endsWith('.xlsx')) {
@@ -224,79 +231,89 @@ class _FolderScreenState extends State<FolderScreen> {
           ),
         ),
         actions:
-        _selectionMode
-            ? [
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.red.shade500),
-            onPressed: _deleteSelectedFiles,
-          ),
-          IconButton(
-            icon: Icon(Icons.close, color: Colors.white70),
-            onPressed:
-                () => setState(() {
-              _selectedFiles.clear();
-              _selectionMode = false;
-            }),
-          ),
-        ]
-            : [],
+            _selectionMode
+                ? [
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red.shade500),
+                    onPressed: _deleteSelectedFiles,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.white70),
+                    onPressed:
+                        () => setState(() {
+                          _selectedFiles.clear();
+                          _selectionMode = false;
+                        }),
+                  ),
+                ]
+                : [],
       ),
       backgroundColor: Color(0xff405D72),
       body:
-      _folderBox?.isEmpty ?? true
-          ? Center(
-        child: Text("first create folder", style: myTextStyle21()),
-      )
-          : GridView.builder(
-        padding: EdgeInsets.all(10),
-        itemCount: _files.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (context, index) {
-          String filePath = _files[index];
-          bool isSelected = _selectedFiles.contains(filePath);
-
-          return InkWell(
-            onTap: () {
-              _openFile(filePath);
-            },
-            onLongPress: () => _toggleSelection(filePath),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: isSelected ? Colors.red : Colors.grey,
-                  width: 2,
+          _folderBox?.isEmpty ?? true
+              ? Center(
+                child: Text("first create folder", style: myTextStyle21()),
+              )
+              : GridView.builder(
+                padding: EdgeInsets.all(10),
+                itemCount: _files.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
                 ),
-                borderRadius: BorderRadius.circular(8),
-                color:
-                isSelected
-                    ? Colors.red.withAlpha(60)
-                    : Colors.white10,
+                itemBuilder: (context, index) {
+                  String filePath = _files[index];
+                  bool isSelected = _selectedFiles.contains(filePath);
+                  return InkWell(
+                    onTap:
+                        _selectionMode
+                            ? () => _toggleSelection(filePath)
+                            : () => _openFile(filePath),
+                    onLongPress: () => _toggleSelection(filePath),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected ? Colors.red : Colors.grey,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        color:
+                            isSelected
+                                ? Colors.red.withAlpha(60)
+                                : Colors.white10,
+                      ),
+                      child: Center(child: _buildFileIcon(filePath)),
+                    ),
+                  );
+                },
               ),
-              child: Center(child: _buildFileIcon(filePath)),
-            ),
-          );
-        },
-      ),
+
+      /// --- Add file button --- ///
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton:
-      _selectionMode
-          ? null
-          : FloatingActionButton.extended(
-        onPressed: _addFile,
-        elevation: 1,
-        icon: Icon(Icons.add, color: Color(0xff405D72)),
-        backgroundColor: Color(0xffF7E7DC),
-        label: Text(
-          "Add files",
-          style: myTextStyle18(fontColor: Color(0xff405D72)),
-        ),
-      ),
+          _selectionMode
+              ? null
+              : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FloatingActionButton.extended(
+                    onPressed: _addFile,
+                    elevation: 1,
+                    icon: Icon(Icons.add, color: Color(0xff405D72)),
+                    backgroundColor: Color(0xffF7E7DC),
+                    label: Text(
+                      "Add files",
+                      style: myTextStyle18(fontColor: Color(0xff405D72)),
+                    ),
+                  ),
+                ),
+              ),
     );
   }
 
+  ///--- widgets --- ///
   Widget _buildFileIcon(String filePath) {
     if (filePath.endsWith(".pdf")) {
       return FaIcon(
