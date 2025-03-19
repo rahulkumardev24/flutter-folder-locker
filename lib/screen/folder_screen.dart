@@ -59,23 +59,26 @@ class _FolderScreenState extends State<FolderScreen> {
 
   void _deleteSelectedFiles() {
     if (_selectedFiles.isEmpty) return;
-
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
+      builder: (context) => AlertDialog(
             backgroundColor: Colors.white,
             shape: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             title: Text(
               "Are you sure you want to delete the selected files?",
-              style: myTextStyle12(
+              style: myTextStyle21(
                 fontWeight: FontWeight.bold,
                 fontColor: Color(0xff405D72),
               ),
             ),
+            icon: Image.asset("assets/icons/cross.png"),
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    side: BorderSide(width: 2 , color: Colors.black45),
+                    backgroundColor: Colors.white),
                 child: Text(
                   "Cancel",
                   style: myTextStyle18(fontColor: Colors.black45),
@@ -98,6 +101,9 @@ class _FolderScreenState extends State<FolderScreen> {
                   });
                   Navigator.pop(context);
                 },
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.red ),
                 child: Text(
                   "Ok",
                   style: myTextStyle18(
@@ -249,10 +255,23 @@ class _FolderScreenState extends State<FolderScreen> {
       ),
       backgroundColor: Color(0xff405D72),
       body:
-          _folderBox?.isEmpty ?? true
-              ? Center(
-                child: Text("first create folder", style: myTextStyle21()),
-              )
+      _files.isEmpty
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/images/box.png", height: 100),
+            Text(
+              "Folder is empty",
+              style: myTextStyle21(fontColor: Colors.white54),
+            ),
+            Text(
+              "Click on the Add Files button to add a file",
+              style: myTextStyle15(fontColor: Colors.black54),
+            ),
+          ],
+        ),
+      )
               : GridView.builder(
                 padding: EdgeInsets.all(10),
                 itemCount: _files.length,

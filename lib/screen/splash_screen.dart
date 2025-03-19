@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               SizedBox(width: 16),
               Image.asset(
-                "assets/icons/open-folder.png",
+                "assets/icons/folder (1).png",
                 height: 30,
                 color: Colors.black45,
               ),
