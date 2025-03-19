@@ -49,6 +49,7 @@ dependencies:
   marquee: ^2.3.0
   lottie: ^3.3.1
   animated_text_kit: ^4.2.3
+  chewie: ^1.11.0
 
 
 dev_dependencies:

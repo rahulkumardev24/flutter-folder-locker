@@ -33,7 +33,6 @@ class _FolderScreenState extends State<FolderScreen> {
       final dir = await getApplicationDocumentsDirectory();
       Hive.init(dir.path);
       _folderBox = await Hive.openBox('folderData');
-
       setState(() {
         _files = List<String>.from(_folderBox?.get(widget.folderName) ?? []);
         _isLoading = false;
@@ -168,7 +167,7 @@ class _FolderScreenState extends State<FolderScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VideoPlayerScreen(videoPath: filePath),
+          builder: (context) => VideoPlayerScreen(videoPath: filePath,),
         ),
       );
     }
@@ -338,9 +337,5 @@ class _FolderScreenState extends State<FolderScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    _folderBox?.close();
-    super.dispose();
-  }
+
 }

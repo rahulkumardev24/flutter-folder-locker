@@ -104,7 +104,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(Icons.delete ,  size: 27, color: Color(0xff405D72), ),
           ) ,
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(Icons.lock_open_outlined , size: 27, color: Color(0xff405D72),),

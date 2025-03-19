@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>  {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -26,10 +26,14 @@ class _SplashScreenState extends State<SplashScreen>  {
     await Future.delayed(const Duration(seconds: 2));
     if (savedPassword == null) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SetPasswordScreen()));
+        context,
+        MaterialPageRoute(builder: (context) => SetPasswordScreen()),
+      );
     } else {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => EnterPasswordScreen()));
+        context,
+        MaterialPageRoute(builder: (context) => EnterPasswordScreen()),
+      );
     }
   }
 
@@ -38,37 +42,63 @@ class _SplashScreenState extends State<SplashScreen>  {
     return Scaffold(
       backgroundColor: Color(0xff405D72),
       body: Column(
-        mainAxisAlignment:MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 81),
-          Image.asset("assets/icons/folder-security.png" , height: 200,) ,
-          SizedBox(height: 16,),
-          Text("Folder locker" , style: myTextStyle32(fontColor: Color(
-              0xffbeae90) , fontWeight: FontWeight.bold),) ,
-          Spacer() ,
-          Text("Lock every thing" , style: myTextStyle21(fontColor: Colors.black45),) ,
-          SizedBox(
-            width: 300,
-              child: Divider(color: Colors.white24,)),
+          Expanded(
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/icons/folder-security.png", height: 100),
+                SizedBox(height: 16),
+                Text(
+                  "Folder locker",
+                  style: myTextStyle21(
+                    fontColor: Color(0xffbeae90),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Text(
+            "Lock every thing",
+            style: myTextStyle21(fontColor: Colors.black87),
+          ),
+          SizedBox(width: 300, child: Divider(color: Colors.white24)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            Image.asset("assets/icons/image-.png" , height: 40,) ,
-            SizedBox(width: 16,),
-            Image.asset("assets/icons/youtube (1).png" , height: 40,) ,
-              SizedBox(width: 16,),
-            Image.asset("assets/icons/open-folder.png" , height: 40,) ,
-              SizedBox(width: 16,),
-            Image.asset("assets/icons/music-file.png" , height: 40,) ,
-
-          ],) ,
-          SizedBox(height: 51,)
-
+              Image.asset(
+                "assets/icons/image-.png",
+                height: 30,
+                color: Colors.black45,
+              ),
+              SizedBox(width: 16),
+              Image.asset(
+                "assets/icons/youtube (1).png",
+                height: 30,
+                color: Colors.black45,
+              ),
+              SizedBox(width: 16),
+              Image.asset(
+                "assets/icons/open-folder.png",
+                height: 30,
+                color: Colors.black45,
+              ),
+              SizedBox(width: 16),
+              Image.asset(
+                "assets/icons/music-file.png",
+                height: 30,
+                color: Colors.black45,
+              ),
+            ],
+          ),
+          SizedBox(height: 51),
         ],
       ),
-
-
-    ) ;
+    );
   }
 }
